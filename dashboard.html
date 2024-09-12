@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background: #f7f9fc; /* Light background color for a fresh look */
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: #ffffff; /* White background for the content */
+            color: #333333;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 80%;
+            max-width: 500px;
+        }
+        h1 {
+            margin: 0;
+            font-size: 32px;
+            color: #007bff; /* Light blue color for the title */
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 18px;
+            color: #4caf50; /* Green color for the authorization message */
+            margin-bottom: 30px;
+        }
+        a {
+            text-decoration: none;
+            color: #ffffff;
+            background-color: #28a745; /* Green button color */
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+        }
+        a:hover {
+            background-color: #218838; /* Darker green on hover */
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+        a:active {
+            background-color: #1e7e34; /* Even darker green on active */
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dashboard</h1>
+        <p>Yes... You are authorized!</p>
+        <a href="/logout">Logout</a>
+    </div>
+</body>
+</html>
