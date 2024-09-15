@@ -8,60 +8,89 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            background: #f7f9fc; /* Light background color for a fresh look */
+            background: linear-gradient(135deg, #000000, #003300); /* Black with slight green tone gradient */
             color: #333;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        .background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(0, 128, 0, 0.2), transparent); /* Very light green radial glow */
+            z-index: -1;
         }
         .container {
-            background: #ffffff; /* White background for the content */
+            background: linear-gradient(135deg, #ffffff, #f0f0f0); /* Slight gradient for content */
             color: #333333;
             padding: 40px;
             border-radius: 12px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 0 20px rgba(0, 255, 0, 0.5); /* Glowing effect */
             text-align: center;
             width: 80%;
             max-width: 500px;
+            position: relative;
+            z-index: 1;
+            transition: box-shadow 0.3s; /* Smooth transition */
         }
-        h1 {
-            margin: 0;
+        .container:hover {
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3), 0 0 30px rgba(0, 255, 0, 0.8); /* More intense glow on hover */
+        }
+        .authorized-message {
             font-size: 32px;
-            color: #007bff; /* Light blue color for the title */
-            margin-bottom: 20px;
-        }
-        p {
-            font-size: 18px;
-            color: #4caf50; /* Green color for the authorization message */
+            color: #4caf50; /* Green color for the verification message */
             margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 500; /* Normal weight */
+        }
+        .authorized-message img {
+            width: 24px; /* Adjust size as needed */
+            height: 24px; /* Adjust size as needed */
+            margin-right: 10px; /* Space between logo and text */
+        }
+        .authorized-message span {
+            font-size: 24px; /* Reduced size for the emoji */
+            margin-left: 10px;
         }
         a {
             text-decoration: none;
             color: #ffffff;
-            background-color: #28a745; /* Green button color */
+            background-color: #d9534f; /* Red tint for the logout button */
             border: none;
             border-radius: 8px;
             padding: 12px 20px;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: bold;
             transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
         }
         a:hover {
-            background-color: #218838; /* Darker green on hover */
+            background-color: #c9302c; /* Darker red on hover */
             transform: scale(1.05);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
         }
         a:active {
-            background-color: #1e7e34; /* Even darker green on active */
+            background-color: #ac2925; /* Even darker red on active */
             transform: scale(0.98);
         }
     </style>
 </head>
 <body>
+    <div class="background"></div>
     <div class="container">
-        <h1>Dashboard</h1>
-        <p>Yes... You are authorized!</p>
+        <div class="authorized-message">
+            <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub logo">
+            You are Authorized!
+            <span>✅</span>
+        </div>
         <a href="/logout">Logout</a>
     </div>
 </body>
