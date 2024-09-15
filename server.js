@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const GitHubStrategy = require('passport-github').Strategy;
 const passport = require('passport');
@@ -8,7 +9,7 @@ const app = express();
 
 app.use(
     session({
-        secret: 'keyboard cat',
+        secret: process.env.SESSION_SECRET,
         resave: false,
         saveUninitialized: false,
         cookie: {
@@ -37,8 +38,8 @@ passport.deserializeUser(function (user, cb) {
 passport.use(
     new GitHubStrategy(
         {
-            clientID: 'Ov23lidheFid8KjRVhFJ',
-            clientSecret: 'e16f128e7b7fbf2f18a3c25375461df496ad35a5',
+            clientID: process.env.GITHUB_CLIENT_ID,
+            clientSecret: proces.env.GITHUB_CLIENT_SECRET,
             callbackURL: 'https://projectdeployment-nu.vercel.app/auth/github/callback',
         },
         async function (accessToken, refreshToken, profile, cb) {
