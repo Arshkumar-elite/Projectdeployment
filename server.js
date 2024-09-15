@@ -39,7 +39,7 @@ passport.use(
     new GitHubStrategy(
         {
             clientID: process.env.GITHUB_CLIENT_ID,
-            clientSecret: proces.env.GITHUB_CLIENT_SECRET,
+            clientSecret: process.env.GITHUB_CLIENT_SECRET,
             callbackURL: 'https://projectdeployment-nu.vercel.app/auth/github/callback',
         },
         async function (accessToken, refreshToken, profile, cb) {
