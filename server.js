@@ -3,7 +3,7 @@ const express = require('express');
 const GitHubStrategy = require('passport-github').Strategy;
 const passport = require('passport');
 const session = require('express-session');
-const axios = require('axios');
+const axios = require('axios'); // Import axios to make API requests to GitHub
 const path = require('path');
 const app = express();
 
@@ -14,22 +14,25 @@ app.use(
         saveUninitialized: false,
         cookie: {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production', // Set to true in production
-            sameSite: 'Lax', // Ensures proper cookie handling
-            maxAge: 24 * 60 * 60 * 1000, // 1 day
+            secure: false,
+            maxAge: 24 * 60 * 60 * 1000,
         },
     })
 );
 
+
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.serializeUser((user, cb) => {
-    cb(null, user);
+// Passport serialization and deserialization - save the full user profile, not just the ID
+passport.serializeUser(function (user, cb) {
+    console.log('Serializing user:', user);
+    cb(null, user); // Save the whole user object, including the "following" field
 });
 
-passport.deserializeUser((user, cb) => {
-    cb(null, user);
+passport.deserializeUser(function (user, cb) {
+    console.log('Deserializing user:', user);
+    cb(null, user); // Deserialize the whole user object
 });
 
 passport.use(
@@ -39,18 +42,24 @@ passport.use(
             clientSecret: process.env.GITHUB_CLIENT_SECRET,
             callbackURL: 'https://projectdeployment-steel.vercel.app/auth/github/callback',
         },
-        async (accessToken, refreshToken, profile, cb) => {
+        async function (accessToken, refreshToken, profile, cb) {
             try {
+                // Check if the user is following the 'bytemait' account
                 const response = await axios.get(`https://api.github.com/user/following/bytemait`, {
-                    headers: { Authorization: `Bearer ${accessToken}` },
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`, // Use the user's access token to authenticate
+                    },
                 });
 
-                profile.following = response.status === 204;
+                // If the status code is 204, the user is following the account
+                profile.following = response.status === 204 ? true : false;
+
             } catch (error) {
-                profile.following = false;
+                profile.following = false; // Assume not following if there's an error
             }
 
-            cb(null, profile);
+            // Continue with the profile and access token
+            cb(null, profile); // Pass the profile (including follow status) to Passport
         }
     )
 );
@@ -64,14 +73,18 @@ const isAuth = (req, res, next) => {
     }
 };
 
+// Route for dashboard - Check follow status and serve the appropriate page
 app.get('/', isAuth, (req, res) => {
+    console.log('Checking follow status:', req.user);
+
     if (req.user.following) {
-        res.sendFile(path.join(__dirname, 'dashboard.html'));
+        res.sendFile(path.join(__dirname, 'dashboard.html')); // Serve dashboard if the user is following
     } else {
-        res.sendFile(path.join(__dirname, 'follow.html'));
+        res.sendFile(path.join(__dirname, 'follow.html')); // Serve follow.html if not following
     }
 });
 
+// Route for login page
 app.get('/login', (req, res) => {
     if (req.user) {
         return res.redirect('/');
@@ -79,25 +92,29 @@ app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+// Route for logout
 app.get('/logout', (req, res, next) => {
     req.logout((err) => {
         if (err) {
-            return next(err);
+            console.log('Error logging out:', err);
+            return next(err); // Pass the error to the next middleware
         }
-        req.session.destroy((err) => {
-            if (err) {
-                return next(err);
-            }
-            res.clearCookie('connect.sid'); // Clear the session cookie
-            res.redirect('/login');
-        });
+        res.redirect('/login');
     });
 });
 
+// GitHub authentication route
 app.get('/auth/github', passport.authenticate('github'));
 
-app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/login' }), (req, res) => {
-    res.redirect('/');
-});
+// GitHub authentication callback route
+app.get(
+    '/auth/github/callback',
+    passport.authenticate('github', { failureRedirect: '/login' }),
+    (req, res) => {
+        // Successful authentication, redirect home
+        res.redirect('/');
+    }
+);
 
+// Start the server
 app.listen(3000, () => console.log('Server is running on port 3000'));
