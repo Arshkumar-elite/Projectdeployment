@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/server.js"
+    }
+  ],
+  "env": {
+    "GITHUB_CLIENT_ID": "@github_client_id", 
+    "GITHUB_CLIENT_SECRET": "@github_client_secret", 
+    "SESSION_SECRET": "@session_secret"
+  }
+}
