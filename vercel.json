@@ -12,9 +12,4 @@
       "dest": "/server.js"
     }
   ],
-  "env": {
-    "GITHUB_CLIENT_ID": "@github_client_id", 
-    "GITHUB_CLIENT_SECRET": "@github_client_secret", 
-    "SESSION_SECRET": "@session_secret"
-  }
 }
