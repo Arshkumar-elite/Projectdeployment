@@ -78,13 +78,25 @@
             background-color: #1d1f22; /* Even darker on active */
             transform: scale(0.98);
         }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
     </style>
 </head>
 <body>
     <div class="background"></div>
     <div class="jumbotron">
         <h1>Social Authentication</h1>
-        <a href="/auth/github" class="github-button">
+        <p class="sr-only">Sign in using GitHub OAuth to access the protected area.</p>
+        <a href="/auth/github" class="github-button" aria-label="Login with GitHub">
             <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub logo">
             Login with GitHub
         </a>
